@@ -106,9 +106,24 @@ def handler(event: dict, context) -> dict:
         if email:
             lines.append(f'📧 <b>Email:</b> {email}')
         tg_text = '\n'.join(lines)
+
+        # Кнопка "Ответить"
+        if contact.startswith('@'):
+            tg_username = contact.lstrip('@')
+            reply_url = f'https://t.me/{tg_username}'
+            button_text = '💬 Написать в Telegram'
+        else:
+            phone = ''.join(c for c in contact if c in '0123456789+')
+            reply_url = f'tel:{phone}'
+            button_text = '📞 Позвонить'
+
+        reply_markup = {
+            'inline_keyboard': [[{'text': button_text, 'url': reply_url}]]
+        }
+
         resp = req_lib.post(
             f'https://api.telegram.org/bot{tg_token}/sendMessage',
-            json={'chat_id': tg_chat_id, 'text': tg_text, 'parse_mode': 'HTML'},
+            json={'chat_id': tg_chat_id, 'text': tg_text, 'parse_mode': 'HTML', 'reply_markup': reply_markup},
             timeout=15
         )
         logger.info(f"Telegram: статус {resp.status_code}, ответ {resp.text}")
