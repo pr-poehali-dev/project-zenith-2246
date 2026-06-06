@@ -359,8 +359,8 @@ const Index = () => {
       </section>
 
       {/* Reviews */}
-      <section id="reviews" className="py-32 px-6 bg-accent/5">
-        <div className="max-w-7xl mx-auto">
+      <section id="reviews" className="py-32 bg-accent/5 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <span className="text-xs font-medium tracking-widest text-accent/60 uppercase">Отзывы</span>
             <h2 className="text-5xl lg:text-6xl font-display font-black tracking-tighter mt-4">
@@ -369,25 +369,48 @@ const Index = () => {
               </span>
             </h2>
           </div>
+        </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { id: 1, placeholder: true },
-              { id: 2, placeholder: true },
-              { id: 3, placeholder: true },
-            ].map((review) => (
+        <div className="relative">
+          <div className="flex gap-4 overflow-x-auto pb-4 px-6 scrollbar-none snap-x snap-mandatory"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            ref={(el) => { if (el) el.style.cssText += '-webkit-overflow-scrolling: touch;' }}
+            id="reviews-carousel"
+          >
+            {Array.from({ length: 19 }, (_, i) => i + 1).map((id) => (
               <div
-                key={review.id}
-                className="bg-black/40 border border-accent/15 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
+                key={id}
+                className="flex-shrink-0 w-72 snap-start bg-black/40 border border-accent/15 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
               >
-                <div className="w-full aspect-[4/3] bg-accent/5 flex items-center justify-center">
+                <div className="w-full aspect-[3/4] bg-accent/5 flex items-center justify-center">
                   <div className="text-center text-muted-foreground">
-                    <Icon name="Image" size={40} className="mx-auto mb-2 opacity-30" />
-                    <p className="text-sm opacity-50">Фото отзыва {review.id}</p>
+                    <Icon name="Image" size={36} className="mx-auto mb-2 opacity-30" />
+                    <p className="text-sm opacity-40">Отзыв {id}</p>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="flex justify-center gap-3 mt-8 px-6">
+            <button
+              onClick={() => {
+                const el = document.getElementById('reviews-carousel');
+                if (el) el.scrollBy({ left: -600, behavior: 'smooth' });
+              }}
+              className="w-11 h-11 rounded-full border border-accent/30 hover:border-accent/60 hover:bg-accent/10 transition-all flex items-center justify-center"
+            >
+              <Icon name="ChevronLeft" size={20} className="text-accent" />
+            </button>
+            <button
+              onClick={() => {
+                const el = document.getElementById('reviews-carousel');
+                if (el) el.scrollBy({ left: 600, behavior: 'smooth' });
+              }}
+              className="w-11 h-11 rounded-full border border-accent/30 hover:border-accent/60 hover:bg-accent/10 transition-all flex items-center justify-center"
+            >
+              <Icon name="ChevronRight" size={20} className="text-accent" />
+            </button>
           </div>
         </div>
       </section>
