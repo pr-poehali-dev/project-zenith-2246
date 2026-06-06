@@ -293,8 +293,16 @@ const Index = () => {
               <div className="relative p-10 border border-accent/40 bg-accent/10 rounded-2xl backdrop-blur-sm">
                 <div className="absolute -inset-1 bg-gradient-to-r from-accent via-accent to-accent/60 rounded-3xl opacity-20 blur-xl" />
                 <div className="relative">
-                  <div className="text-4xl mb-6">👋</div>
-                  <h3 className="font-display font-bold text-2xl mb-4">Меня зовут Александр</h3>
+                  <div className="flex items-center gap-5 mb-6">
+                    <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-accent/40 flex-shrink-0 ring-4 ring-accent/10">
+                      <img
+                        src="https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/0108dd91-4381-40e2-b756-0b650cd6aa2f.JPG"
+                        alt="Александр"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </div>
+                    <h3 className="font-display font-bold text-2xl">Меня зовут Александр</h3>
+                  </div>
                   <p className="text-foreground/80 leading-relaxed mb-6">
                     Наша команда работает в сфере парфюмерии уже более 7 лет. Когда-то мы сами искали проверенного поставщика с оригинальным продуктом и лояльными условиями — это оказалось непросто.
                   </p>
