@@ -65,9 +65,21 @@ def handler(event: dict, context) -> dict:
 def send_telegram(text: str):
     token = os.environ['TELEGRAM_BOT_TOKEN']
     chat_id = '7185027849'
-    url = f'https://api.telegram.org/bot{token}/sendMessage'
-    resp = requests.post(url, json={'chat_id': chat_id, 'text': text}, timeout=10)
-    resp.raise_for_status()
+    # Пробуем основной URL, затем резервный прокси
+    urls = [
+        f'https://api.telegram.org/bot{token}/sendMessage',
+        f'https://api.tg.dev/bot{token}/sendMessage',
+    ]
+    last_err = None
+    for url in urls:
+        try:
+            resp = requests.post(url, json={'chat_id': chat_id, 'text': text}, timeout=8)
+            if resp.status_code == 200:
+                return
+            last_err = f'HTTP {resp.status_code}: {resp.text}'
+        except Exception as e:
+            last_err = str(e)
+    raise Exception(f'Telegram недоступен: {last_err}')
 
 
 def send_email(name: str, contact: str, email: str):
