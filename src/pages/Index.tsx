@@ -64,7 +64,7 @@ const Index = () => {
               href="mailto:parfopt-1@yandex.ru"
               className="px-5 py-2.5 text-sm font-medium bg-gradient-to-r from-accent via-accent to-accent/80 text-black rounded-full hover:shadow-lg hover:shadow-accent/40 transition-all font-semibold"
             >
-              Скачать прайс
+              Получить прайс
             </a>
           </div>
         </div>
@@ -106,7 +106,7 @@ const Index = () => {
                   href="mailto:parfopt-1@yandex.ru"
                   className="group px-8 py-4 bg-gradient-to-r from-accent to-accent/90 text-black rounded-full hover:shadow-2xl hover:shadow-accent/50 transition-all font-semibold text-lg flex items-center gap-3 justify-center"
                 >
-                  Скачать прайс-лист
+                  Получить прайс-лист
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
                 </a>
                 <a
