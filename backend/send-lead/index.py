@@ -2,10 +2,7 @@ import os
 import json
 import smtplib
 import logging
-import ssl
-import urllib.request
-import pg8000.native
-from urllib.parse import urlparse
+import psycopg2
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -44,22 +41,16 @@ def handler(event: dict, context) -> dict:
 
     # Сохраняем в БД всегда
     try:
-        u = urlparse(os.environ['DATABASE_URL'])
         schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
-        conn = pg8000.native.Connection(
-            host=u.hostname,
-            port=u.port or 5432,
-            database=u.path.lstrip('/'),
-            user=u.username,
-            password=u.password
+        conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+        cur = conn.cursor()
+        cur.execute(f"SET search_path TO {schema}")
+        cur.execute(
+            "INSERT INTO leads (name, contact, email) VALUES (%s, %s, %s)",
+            (name or None, contact, email or None)
         )
-        conn.run(f"SET search_path TO {schema}")
-        conn.run(
-            "INSERT INTO leads (name, contact, email) VALUES (:name, :contact, :email)",
-            name=name or None,
-            contact=contact,
-            email=email or None
-        )
+        conn.commit()
+        cur.close()
         conn.close()
         logger.info("БД: заявка сохранена")
     except Exception as e:
