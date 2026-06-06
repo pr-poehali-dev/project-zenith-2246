@@ -7,6 +7,7 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState({ name: "", contact: "", email: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -402,11 +403,14 @@ const Index = () => {
                 key={i}
                 className="flex-shrink-0 w-64 snap-start bg-black/40 border border-accent/15 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
               >
-                <div className="w-full aspect-[9/16] overflow-hidden">
+                <div
+                  className="w-full aspect-[9/16] overflow-hidden cursor-zoom-in"
+                  onClick={() => setLightboxUrl(url)}
+                >
                   <img
                     src={url}
                     alt={`Отзыв ${i + 1}`}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </div>
@@ -484,6 +488,27 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      {/* Lightbox */}
+      {lightboxUrl && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+          onClick={() => setLightboxUrl(null)}
+        >
+          <button
+            className="absolute top-5 right-5 text-white/70 hover:text-white transition-colors"
+            onClick={() => setLightboxUrl(null)}
+          >
+            <X size={28} />
+          </button>
+          <img
+            src={lightboxUrl}
+            alt="Отзыв"
+            className="max-h-[90vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
