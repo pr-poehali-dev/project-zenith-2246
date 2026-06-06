@@ -85,7 +85,7 @@ def handler(event: dict, context) -> dict:
         mail_error = str(e)
         logger.error(f"Email ошибка: {e}")
 
-    # Отправляем в Telegram через Make.com webhook
+    # Отправляем в Telegram через Bot API
     tg_error = None
     try:
         import requests as req_lib
@@ -107,12 +107,14 @@ def handler(event: dict, context) -> dict:
 
         tg_text = '\n'.join(lines)
 
+        bot_token = os.environ['TELEGRAM_BOT_TOKEN']
+        chat_id = os.environ['TELEGRAM_CHAT_ID']
         r = req_lib.post(
-            'https://hook.eu1.make.com/hqnma995yc6es4pth2okvcbprx741ak7',
-            json={'text': tg_text},
+            f'https://api.telegram.org/bot{bot_token}/sendMessage',
+            json={'chat_id': chat_id, 'text': tg_text},
             timeout=15
         )
-        logger.info(f"Make webhook: {r.status_code} {r.text[:100]}")
+        logger.info(f"Telegram API: {r.status_code} {r.text[:200]}")
     except Exception as e:
         tg_error = str(e)
         logger.error(f"Telegram ошибка: {e}")
