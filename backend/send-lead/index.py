@@ -121,12 +121,29 @@ def handler(event: dict, context) -> dict:
             'inline_keyboard': [[{'text': button_text, 'url': reply_url}]]
         }
 
-        resp = req_lib.post(
+        tg_payload = {
+            'chat_id': tg_chat_id,
+            'text': tg_text,
+            'parse_mode': 'HTML',
+            'reply_markup': reply_markup
+        }
+        # Пробуем несколько эндпоинтов на случай блокировки
+        tg_endpoints = [
             f'https://api.telegram.org/bot{tg_token}/sendMessage',
-            json={'chat_id': tg_chat_id, 'text': tg_text, 'parse_mode': 'HTML', 'reply_markup': reply_markup},
-            timeout=15
-        )
-        logger.info(f"Telegram: статус {resp.status_code}, ответ {resp.text}")
+            f'https://149.154.167.220/bot{tg_token}/sendMessage',
+        ]
+        sent = False
+        for endpoint in tg_endpoints:
+            try:
+                r = req_lib.post(endpoint, json=tg_payload, timeout=10, verify=False)
+                logger.info(f"Telegram [{endpoint[:30]}]: {r.status_code} {r.text[:100]}")
+                if r.status_code == 200:
+                    sent = True
+                    break
+            except Exception as ep_err:
+                logger.warning(f"Telegram endpoint failed: {ep_err}")
+        if not sent:
+            raise Exception("Все эндпоинты Telegram недоступны")
     except Exception as e:
         tg_error = str(e)
         logger.error(f"Telegram ошибка: {e}")
