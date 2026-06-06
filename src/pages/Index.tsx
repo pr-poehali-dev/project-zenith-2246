@@ -1,9 +1,24 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Package, Truck, Star, ShieldCheck, Clock, Users } from "lucide-react";
+import { ArrowRight, Package, Truck, Star, ShieldCheck, Clock, Users, X } from "lucide-react";
 import Icon from "@/components/ui/icon";
 
 const Index = () => {
   const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [form, setForm] = useState({ name: "", contact: "", email: "" });
+  const [submitted, setSubmitted] = useState(false);
+
+  const openModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setSubmitted(false);
+    setForm({ name: "", contact: "", email: "" });
+    setModalOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
   useEffect(() => {
     const observers: Record<string, IntersectionObserver> = {};
@@ -60,12 +75,12 @@ const Index = () => {
             >
               Telegram
             </a>
-            <a
-              href="mailto:parfopt-1@yandex.ru"
+            <button
+              onClick={openModal}
               className="px-5 py-2.5 text-sm font-medium bg-gradient-to-r from-accent via-accent to-accent/80 text-black rounded-full hover:shadow-lg hover:shadow-accent/40 transition-all font-semibold"
             >
               Получить прайс
-            </a>
+            </button>
           </div>
         </div>
       </header>
@@ -102,13 +117,13 @@ const Index = () => {
                 Более 92 000 позиций по выгодным ценам с доставкой по РФ и СНГ. От 1 любой позиции — без предоплаты и минимальной суммы.
               </p>
               <div className="flex gap-4 mb-12 flex-col sm:flex-row">
-                <a
-                  href="mailto:parfopt-1@yandex.ru"
+                <button
+                  onClick={openModal}
                   className="group px-8 py-4 bg-gradient-to-r from-accent to-accent/90 text-black rounded-full hover:shadow-2xl hover:shadow-accent/50 transition-all font-semibold text-lg flex items-center gap-3 justify-center"
                 >
                   Получить прайс-лист
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
-                </a>
+                </button>
                 <a
                   href="https://t.me/+79932770600"
                   className="px-8 py-4 border border-accent/40 rounded-full hover:border-accent/70 hover:bg-accent/10 transition-all font-medium text-lg text-white text-center"
@@ -346,13 +361,13 @@ const Index = () => {
             Напишите нам — пришлём актуальный прайс-лист с более чем 92 000 позиций оригинальной парфюмерии.
           </p>
           <div className="flex gap-4 justify-center flex-col sm:flex-row">
-            <a
-              href="mailto:parfopt-1@yandex.ru"
+            <button
+              onClick={openModal}
               className="group px-10 py-5 bg-gradient-to-r from-accent to-accent/90 text-black rounded-full hover:shadow-2xl hover:shadow-accent/40 transition-all font-bold text-lg flex items-center gap-3 justify-center"
             >
               Получить прайс-лист
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
-            </a>
+            </button>
             <a
               href="https://t.me/+79932770600"
               className="px-10 py-5 border border-accent/40 rounded-full hover:border-accent/70 hover:bg-accent/10 transition-all font-bold text-lg text-white text-center"
@@ -380,6 +395,74 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      {/* Modal */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setModalOpen(false)} />
+          <div className="relative bg-background border border-accent/20 rounded-3xl p-8 w-full max-w-md shadow-2xl shadow-accent/10">
+            <button
+              onClick={() => setModalOpen(false)}
+              className="absolute top-5 right-5 text-muted-foreground hover:text-white transition-colors"
+            >
+              <X size={20} />
+            </button>
+
+            {submitted ? (
+              <div className="text-center py-6">
+                <div className="text-5xl mb-4">✓</div>
+                <h3 className="text-2xl font-bold text-white mb-3">Заявка отправлена!</h3>
+                <p className="text-muted-foreground">Мы свяжемся с вами и пришлём актуальный прайс-лист.</p>
+              </div>
+            ) : (
+              <>
+                <h3 className="text-2xl font-display font-black text-white mb-2">Получить прайс-лист</h3>
+                <p className="text-muted-foreground text-sm mb-6">Заполните форму — пришлём актуальный прайс с 92 000+ позиций.</p>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  <div>
+                    <label className="block text-sm text-white/70 mb-1.5">Ваше имя</label>
+                    <input
+                      type="text"
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder="Иван Иванов"
+                      className="w-full bg-white/5 border border-accent/20 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-accent/60 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-white/70 mb-1.5">
+                      Номер телефона / юзернейм Telegram <span className="text-accent">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={form.contact}
+                      onChange={(e) => setForm({ ...form, contact: e.target.value })}
+                      placeholder="+7 999 123-45-67 или @username"
+                      className="w-full bg-white/5 border border-accent/20 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-accent/60 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-white/70 mb-1.5">E-mail</label>
+                    <input
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      placeholder="example@mail.ru"
+                      className="w-full bg-white/5 border border-accent/20 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-accent/60 transition-colors"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="mt-2 w-full py-4 bg-gradient-to-r from-accent to-accent/90 text-black rounded-xl font-bold text-base hover:shadow-lg hover:shadow-accent/40 transition-all"
+                  >
+                    Отправить заявку
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
