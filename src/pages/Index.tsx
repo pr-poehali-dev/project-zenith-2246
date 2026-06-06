@@ -132,34 +132,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div
-              className={`relative h-96 lg:h-[550px] transition-all duration-1000 flex items-center justify-center ${visibleSections["hero"] ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/30 via-transparent to-transparent rounded-3xl blur-3xl animate-pulse" />
-              <div className="relative z-10 bg-black/40 backdrop-blur-sm border border-accent/20 rounded-3xl p-10 text-center">
-                <div className="text-6xl mb-6">🌸</div>
-                <h3 className="text-2xl font-bold text-white mb-3">Отправка в день заказа</h3>
-                <p className="text-white/60 mb-6">Каждый будний день отправляем заказы из Москвы по всей России и СНГ</p>
-                <div className="flex flex-col gap-3 text-left">
-                  <div className="flex items-center gap-3 text-sm text-white/80">
-                    <Icon name="Check" size={16} className="text-accent flex-shrink-0" />
-                    Без минимальной суммы заказа
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-white/80">
-                    <Icon name="Check" size={16} className="text-accent flex-shrink-0" />
-                    Без предоплаты
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-white/80">
-                    <Icon name="Check" size={16} className="text-accent flex-shrink-0" />
-                    Фото перед отправкой
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-white/80">
-                    <Icon name="Check" size={16} className="text-accent flex-shrink-0" />
-                    Только оригинальная продукция
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
