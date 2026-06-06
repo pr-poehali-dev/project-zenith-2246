@@ -106,11 +106,7 @@ const Index = () => {
             <div
               className={`transition-all duration-1000 ${visibleSections["hero"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
             >
-              <div className="mb-8 inline-block">
-                <span className="text-xs font-medium tracking-widest text-accent/80 uppercase">
-                  Оптовая парфюмерия · 7 лет на рынке
-                </span>
-              </div>
+
               <h1 className="text-6xl lg:text-7xl font-display font-black leading-tight mb-8 tracking-tighter">
                 <span className="bg-gradient-to-br from-white via-white to-accent/40 bg-clip-text text-transparent">
                   Оригинальная
