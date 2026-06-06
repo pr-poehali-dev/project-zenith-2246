@@ -2,8 +2,12 @@ import os
 import json
 import smtplib
 import requests
+import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def handler(event: dict, context) -> dict:
@@ -26,6 +30,8 @@ def handler(event: dict, context) -> dict:
     contact = body.get('contact', '').strip()
     email = body.get('email', '').strip()
 
+    logger.info(f"Новая заявка: name={name}, contact={contact}, email={email}")
+
     if not contact:
         return {
             'statusCode': 400,
@@ -47,13 +53,17 @@ def handler(event: dict, context) -> dict:
 
     try:
         send_telegram(text)
+        logger.info("Telegram: отправлено успешно")
     except Exception as e:
         tg_error = str(e)
+        logger.error(f"Telegram ошибка: {e}")
 
     try:
         send_email(name, contact, email)
+        logger.info("Email: отправлено успешно")
     except Exception as e:
         mail_error = str(e)
+        logger.error(f"Email ошибка: {e}")
 
     return {
         'statusCode': 200,
@@ -65,21 +75,11 @@ def handler(event: dict, context) -> dict:
 def send_telegram(text: str):
     token = os.environ['TELEGRAM_BOT_TOKEN']
     chat_id = '7185027849'
-    # Пробуем основной URL, затем резервный прокси
-    urls = [
-        f'https://api.telegram.org/bot{token}/sendMessage',
-        f'https://api.tg.dev/bot{token}/sendMessage',
-    ]
-    last_err = None
-    for url in urls:
-        try:
-            resp = requests.post(url, json={'chat_id': chat_id, 'text': text}, timeout=8)
-            if resp.status_code == 200:
-                return
-            last_err = f'HTTP {resp.status_code}: {resp.text}'
-        except Exception as e:
-            last_err = str(e)
-    raise Exception(f'Telegram недоступен: {last_err}')
+    url = f'https://api.telegram.org/bot{token}/sendMessage'
+    logger.info(f"Telegram: отправляю на chat_id={chat_id}")
+    resp = requests.post(url, json={'chat_id': chat_id, 'text': text}, timeout=8)
+    logger.info(f"Telegram ответ: {resp.status_code} {resp.text}")
+    resp.raise_for_status()
 
 
 def send_email(name: str, contact: str, email: str):
@@ -101,6 +101,8 @@ def send_email(name: str, contact: str, email: str):
 
     msg.attach(MIMEText(''.join(lines), 'html', 'utf-8'))
 
+    logger.info("Email: подключаюсь к smtp.yandex.ru:465")
     with smtplib.SMTP_SSL('smtp.yandex.ru', 465) as server:
         server.login(smtp_user, smtp_password)
+        logger.info("Email: авторизация успешна, отправляю...")
         server.sendmail(smtp_user, smtp_user, msg.as_string())
