@@ -96,6 +96,7 @@ def handler(event: dict, context) -> dict:
     # Отправляем в Telegram
     tg_error = None
     try:
+        import requests as req_lib
         tg_token = os.environ['TELEGRAM_BOT_TOKEN']
         tg_chat_id = os.environ['TELEGRAM_CHAT_ID']
         lines = ['🔔 <b>Новая заявка на прайс-лист</b>']
@@ -105,18 +106,12 @@ def handler(event: dict, context) -> dict:
         if email:
             lines.append(f'📧 <b>Email:</b> {email}')
         tg_text = '\n'.join(lines)
-        tg_payload = json.dumps({
-            'chat_id': tg_chat_id,
-            'text': tg_text,
-            'parse_mode': 'HTML'
-        }).encode('utf-8')
-        req = urllib.request.Request(
+        resp = req_lib.post(
             f'https://api.telegram.org/bot{tg_token}/sendMessage',
-            data=tg_payload,
-            headers={'Content-Type': 'application/json'}
+            json={'chat_id': tg_chat_id, 'text': tg_text, 'parse_mode': 'HTML'},
+            timeout=15
         )
-        urllib.request.urlopen(req, timeout=10)
-        logger.info("Telegram: сообщение отправлено")
+        logger.info(f"Telegram: статус {resp.status_code}, ответ {resp.text}")
     except Exception as e:
         tg_error = str(e)
         logger.error(f"Telegram ошибка: {e}")
