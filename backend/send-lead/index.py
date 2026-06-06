@@ -2,6 +2,7 @@ import os
 import json
 import smtplib
 import logging
+import urllib.request
 import pg8000.native
 from urllib.parse import urlparse
 from email.mime.text import MIMEText
@@ -92,8 +93,36 @@ def handler(event: dict, context) -> dict:
         mail_error = str(e)
         logger.error(f"Email ошибка: {e}")
 
+    # Отправляем в Telegram
+    tg_error = None
+    try:
+        tg_token = os.environ['TELEGRAM_BOT_TOKEN']
+        tg_chat_id = os.environ['TELEGRAM_CHAT_ID']
+        lines = ['🔔 <b>Новая заявка на прайс-лист</b>']
+        if name:
+            lines.append(f'👤 <b>Имя:</b> {name}')
+        lines.append(f'📞 <b>Контакт:</b> {contact}')
+        if email:
+            lines.append(f'📧 <b>Email:</b> {email}')
+        tg_text = '\n'.join(lines)
+        tg_payload = json.dumps({
+            'chat_id': tg_chat_id,
+            'text': tg_text,
+            'parse_mode': 'HTML'
+        }).encode('utf-8')
+        req = urllib.request.Request(
+            f'https://api.telegram.org/bot{tg_token}/sendMessage',
+            data=tg_payload,
+            headers={'Content-Type': 'application/json'}
+        )
+        urllib.request.urlopen(req, timeout=10)
+        logger.info("Telegram: сообщение отправлено")
+    except Exception as e:
+        tg_error = str(e)
+        logger.error(f"Telegram ошибка: {e}")
+
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
-        'body': json.dumps({'ok': True, 'mail_error': mail_error})
+        'body': json.dumps({'ok': True, 'mail_error': mail_error, 'tg_error': tg_error})
     }
