@@ -518,7 +518,7 @@ const Index = () => {
 
           {/* Разделитель и копирайт */}
           <div className="border-t border-accent/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
-            <p>© 2025 FirstOpt — Оригинальная парфюмерия оптом</p>
+            <p>© 2026 FirstOpt — Оригинальная парфюмерия оптом</p>
             <p>Москва, Россия</p>
           </div>
         </div>
