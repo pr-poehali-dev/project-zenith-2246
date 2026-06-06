@@ -15,8 +15,13 @@ const Index = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await fetch('https://functions.poehali.dev/5d91e12e-30c5-492c-9329-cdcf7cf28592', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
     setSubmitted(true);
   };
 
