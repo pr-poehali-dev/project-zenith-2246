@@ -377,16 +377,37 @@ const Index = () => {
             ref={(el) => { if (el) el.style.cssText += '-webkit-overflow-scrolling: touch;' }}
             id="reviews-carousel"
           >
-            {Array.from({ length: 19 }, (_, i) => i + 1).map((id) => (
+            {[
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/d981d827-ba42-4701-b8a4-eaed83a391d8.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/a61eb943-dd8d-4805-873a-89d2b7982ae5.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/748dc942-1bc7-4a50-81f8-febad9e88714.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/621d5de0-07a3-4049-8b7b-80dae0fe39c9.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/352b530d-153d-47b9-85e5-c86938c58840.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/74a3d18a-179d-48b0-a3bf-f18fdc63db04.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/9dce4c15-325a-4dd9-a556-55ad872e4083.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/0300c764-825c-4dcd-90db-3fbafd5e9aea.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/cef8fe87-264f-44ab-b66a-a1cb627a7526.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/dab8f2e0-56e5-4e27-adb0-adf938b93ae7.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/202aea84-caf5-4049-823d-811dbea861d1.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/1b7159a7-cd66-4258-b250-f94ee04792e0.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/d5f6a587-5ab2-4aa2-93a5-d0d6193f55b0.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/dce00f25-7e12-4c57-a683-f924f522cd5d.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/30691347-36b1-4305-9d38-04a87723a37f.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/27732d88-d1cf-445d-ab3c-a69004405c5d.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/1be0cf76-6607-47cd-a1e8-c050e6bebcb9.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/38bb981d-d767-470c-8f9a-fc430abe9c73.JPG",
+              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/cbeaa636-776b-4e2b-99b7-53f726ee109d.JPG",
+            ].map((url, i) => (
               <div
-                key={id}
-                className="flex-shrink-0 w-72 snap-start bg-black/40 border border-accent/15 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
+                key={i}
+                className="flex-shrink-0 w-64 snap-start bg-black/40 border border-accent/15 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
               >
-                <div className="w-full aspect-[3/4] bg-accent/5 flex items-center justify-center">
-                  <div className="text-center text-muted-foreground">
-                    <Icon name="Image" size={36} className="mx-auto mb-2 opacity-30" />
-                    <p className="text-sm opacity-40">Отзыв {id}</p>
-                  </div>
+                <div className="w-full aspect-[9/16] overflow-hidden">
+                  <img
+                    src={url}
+                    alt={`Отзыв ${i + 1}`}
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
               </div>
             ))}
