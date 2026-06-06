@@ -7,7 +7,29 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState({ name: "", contact: "", email: "" });
   const [submitted, setSubmitted] = useState(false);
-  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const reviewUrls = [
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/d981d827-ba42-4701-b8a4-eaed83a391d8.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/a61eb943-dd8d-4805-873a-89d2b7982ae5.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/748dc942-1bc7-4a50-81f8-febad9e88714.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/621d5de0-07a3-4049-8b7b-80dae0fe39c9.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/352b530d-153d-47b9-85e5-c86938c58840.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/74a3d18a-179d-48b0-a3bf-f18fdc63db04.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/9dce4c15-325a-4dd9-a556-55ad872e4083.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/0300c764-825c-4dcd-90db-3fbafd5e9aea.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/cef8fe87-264f-44ab-b66a-a1cb627a7526.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/dab8f2e0-56e5-4e27-adb0-adf938b93ae7.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/202aea84-caf5-4049-823d-811dbea861d1.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/1b7159a7-cd66-4258-b250-f94ee04792e0.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/d5f6a587-5ab2-4aa2-93a5-d0d6193f55b0.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/dce00f25-7e12-4c57-a683-f924f522cd5d.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/30691347-36b1-4305-9d38-04a87723a37f.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/27732d88-d1cf-445d-ab3c-a69004405c5d.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/1be0cf76-6607-47cd-a1e8-c050e6bebcb9.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/38bb981d-d767-470c-8f9a-fc430abe9c73.JPG",
+    "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/cbeaa636-776b-4e2b-99b7-53f726ee109d.JPG",
+  ];
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -374,34 +396,14 @@ const Index = () => {
             ref={(el) => { if (el) el.style.cssText += '-webkit-overflow-scrolling: touch;' }}
             id="reviews-carousel"
           >
-            {[
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/d981d827-ba42-4701-b8a4-eaed83a391d8.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/a61eb943-dd8d-4805-873a-89d2b7982ae5.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/748dc942-1bc7-4a50-81f8-febad9e88714.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/621d5de0-07a3-4049-8b7b-80dae0fe39c9.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/352b530d-153d-47b9-85e5-c86938c58840.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/74a3d18a-179d-48b0-a3bf-f18fdc63db04.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/9dce4c15-325a-4dd9-a556-55ad872e4083.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/0300c764-825c-4dcd-90db-3fbafd5e9aea.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/cef8fe87-264f-44ab-b66a-a1cb627a7526.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/dab8f2e0-56e5-4e27-adb0-adf938b93ae7.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/202aea84-caf5-4049-823d-811dbea861d1.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/1b7159a7-cd66-4258-b250-f94ee04792e0.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/d5f6a587-5ab2-4aa2-93a5-d0d6193f55b0.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/dce00f25-7e12-4c57-a683-f924f522cd5d.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/30691347-36b1-4305-9d38-04a87723a37f.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/27732d88-d1cf-445d-ab3c-a69004405c5d.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/1be0cf76-6607-47cd-a1e8-c050e6bebcb9.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/38bb981d-d767-470c-8f9a-fc430abe9c73.JPG",
-              "https://cdn.poehali.dev/projects/66f79eb2-4061-4cd5-b3b8-754dec1e81e0/bucket/cbeaa636-776b-4e2b-99b7-53f726ee109d.JPG",
-            ].map((url, i) => (
+            {reviewUrls.map((url, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 w-64 snap-start bg-black/40 border border-accent/15 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
               >
                 <div
                   className="w-full aspect-[9/16] overflow-hidden cursor-zoom-in"
-                  onClick={() => setLightboxUrl(url)}
+                  onClick={() => setLightboxIndex(i)}
                 >
                   <img
                     src={url}
@@ -522,23 +524,42 @@ const Index = () => {
         </div>
       </footer>
       {/* Lightbox */}
-      {lightboxUrl && (
+      {lightboxIndex !== null && (
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
-          onClick={() => setLightboxUrl(null)}
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+          onClick={() => setLightboxIndex(null)}
         >
           <button
-            className="absolute top-5 right-5 text-white/70 hover:text-white transition-colors"
-            onClick={() => setLightboxUrl(null)}
+            className="absolute top-5 right-5 text-white/70 hover:text-white transition-colors z-10"
+            onClick={() => setLightboxIndex(null)}
           >
             <X size={28} />
           </button>
+
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 text-sm text-white/50">
+            {lightboxIndex + 1} / {reviewUrls.length}
+          </div>
+
+          <button
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 hover:border-white/50 hover:bg-white/10 transition-all flex items-center justify-center z-10"
+            onClick={(e) => { e.stopPropagation(); setLightboxIndex((lightboxIndex - 1 + reviewUrls.length) % reviewUrls.length); }}
+          >
+            <Icon name="ChevronLeft" size={22} className="text-white" />
+          </button>
+
           <img
-            src={lightboxUrl}
-            alt="Отзыв"
-            className="max-h-[90vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl"
+            src={reviewUrls[lightboxIndex]}
+            alt={`Отзыв ${lightboxIndex + 1}`}
+            className="max-h-[90vh] max-w-[calc(100vw-120px)] object-contain rounded-2xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
+
+          <button
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border border-white/20 hover:border-white/50 hover:bg-white/10 transition-all flex items-center justify-center z-10"
+            onClick={(e) => { e.stopPropagation(); setLightboxIndex((lightboxIndex + 1) % reviewUrls.length); }}
+          >
+            <Icon name="ChevronRight" size={22} className="text-white" />
+          </button>
         </div>
       )}
 
