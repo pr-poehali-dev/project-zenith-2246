@@ -2,6 +2,7 @@ import os
 import json
 import smtplib
 import logging
+import ssl
 import urllib.request
 import pg8000.native
 from urllib.parse import urlparse
@@ -44,14 +45,19 @@ def handler(event: dict, context) -> dict:
     # Сохраняем в БД всегда
     try:
         u = urlparse(os.environ['DATABASE_URL'])
+        ssl_ctx = ssl.create_default_context()
+        ssl_ctx.check_hostname = False
+        ssl_ctx.verify_mode = ssl.CERT_NONE
+        schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
         conn = pg8000.native.Connection(
             host=u.hostname,
             port=u.port or 5432,
             database=u.path.lstrip('/'),
             user=u.username,
             password=u.password,
-            ssl_context=True
+            ssl_context=ssl_ctx
         )
+        conn.run(f"SET search_path TO {schema}")
         conn.run(
             "INSERT INTO leads (name, contact, email) VALUES (:name, :contact, :email)",
             name=name or None,
