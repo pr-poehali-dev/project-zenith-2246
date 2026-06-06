@@ -1,10 +1,7 @@
 import os
 import json
-import smtplib
 import requests
 import logging
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -49,60 +46,22 @@ def handler(event: dict, context) -> dict:
     text = '\n'.join(message_lines)
 
     tg_error = None
-    mail_error = None
 
     try:
-        send_telegram(text)
-        logger.info("Telegram: отправлено успешно")
+        token = os.environ['TELEGRAM_BOT_TOKEN']
+        chat_id = '7185027849'
+        url = f'https://api.telegram.org/bot{token}/sendMessage'
+        logger.info(f"Telegram: отправляю...")
+        resp = requests.post(url, json={'chat_id': chat_id, 'text': text}, timeout=25)
+        logger.info(f"Telegram ответ: {resp.status_code} {resp.text[:300]}")
+        resp.raise_for_status()
+        logger.info("Telegram: успешно!")
     except Exception as e:
         tg_error = str(e)
         logger.error(f"Telegram ошибка: {e}")
 
-    try:
-        send_email(name, contact, email)
-        logger.info("Email: отправлено успешно")
-    except Exception as e:
-        mail_error = str(e)
-        logger.error(f"Email ошибка: {e}")
-
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
-        'body': json.dumps({'ok': True, 'tg_error': tg_error, 'mail_error': mail_error})
+        'body': json.dumps({'ok': True, 'tg_error': tg_error})
     }
-
-
-def send_telegram(text: str):
-    token = os.environ['TELEGRAM_BOT_TOKEN']
-    chat_id = '7185027849'
-    url = f'https://api.telegram.org/bot{token}/sendMessage'
-    logger.info(f"Telegram: отправляю на chat_id={chat_id}")
-    resp = requests.post(url, json={'chat_id': chat_id, 'text': text}, timeout=8)
-    logger.info(f"Telegram ответ: {resp.status_code} {resp.text}")
-    resp.raise_for_status()
-
-
-def send_email(name: str, contact: str, email: str):
-    smtp_user = 'parfopt-1@yandex.ru'
-    smtp_password = os.environ['SMTP_PASSWORD']
-
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = 'Новая заявка на прайс-лист FirstOpt'
-    msg['From'] = smtp_user
-    msg['To'] = smtp_user
-
-    lines = ['<h3>📦 Новая заявка на прайс-лист FirstOpt</h3><ul>']
-    if name:
-        lines.append(f'<li><b>Имя:</b> {name}</li>')
-    lines.append(f'<li><b>Контакт:</b> {contact}</li>')
-    if email:
-        lines.append(f'<li><b>E-mail:</b> {email}</li>')
-    lines.append('</ul>')
-
-    msg.attach(MIMEText(''.join(lines), 'html', 'utf-8'))
-
-    logger.info("Email: подключаюсь к smtp.yandex.ru:465")
-    with smtplib.SMTP_SSL('smtp.yandex.ru', 465) as server:
-        server.login(smtp_user, smtp_password)
-        logger.info("Email: авторизация успешна, отправляю...")
-        server.sendmail(smtp_user, smtp_user, msg.as_string())
