@@ -93,57 +93,34 @@ def handler(event: dict, context) -> dict:
         mail_error = str(e)
         logger.error(f"Email ошибка: {e}")
 
-    # Отправляем в Telegram
+    # Отправляем в Telegram через Make.com webhook
     tg_error = None
     try:
         import requests as req_lib
-        tg_token = os.environ['TELEGRAM_BOT_TOKEN']
-        tg_chat_id = os.environ['TELEGRAM_CHAT_ID']
-        lines = ['🔔 <b>Новая заявка на прайс-лист</b>']
-        if name:
-            lines.append(f'👤 <b>Имя:</b> {name}')
-        lines.append(f'📞 <b>Контакт:</b> {contact}')
-        if email:
-            lines.append(f'📧 <b>Email:</b> {email}')
-        tg_text = '\n'.join(lines)
 
-        # Кнопка "Ответить"
+        lines = ['🔔 Новая заявка на прайс-лист']
+        if name:
+            lines.append(f'👤 Имя: {name}')
+        lines.append(f'📞 Контакт: {contact}')
+        if email:
+            lines.append(f'📧 Email: {email}')
+
         if contact.startswith('@'):
             tg_username = contact.lstrip('@')
-            reply_url = f'https://t.me/{tg_username}'
-            button_text = '💬 Написать в Telegram'
+            lines.append(f'\n💬 https://t.me/{tg_username}')
         else:
             phone = ''.join(c for c in contact if c in '0123456789+')
-            reply_url = f'tel:{phone}'
-            button_text = '📞 Позвонить'
+            if phone:
+                lines.append(f'\n📞 tel:{phone}')
 
-        reply_markup = {
-            'inline_keyboard': [[{'text': button_text, 'url': reply_url}]]
-        }
+        tg_text = '\n'.join(lines)
 
-        tg_payload = {
-            'chat_id': tg_chat_id,
-            'text': tg_text,
-            'parse_mode': 'HTML',
-            'reply_markup': reply_markup
-        }
-        # Пробуем несколько эндпоинтов на случай блокировки
-        tg_endpoints = [
-            f'https://api.telegram.org/bot{tg_token}/sendMessage',
-            f'https://149.154.167.220/bot{tg_token}/sendMessage',
-        ]
-        sent = False
-        for endpoint in tg_endpoints:
-            try:
-                r = req_lib.post(endpoint, json=tg_payload, timeout=10, verify=False)
-                logger.info(f"Telegram [{endpoint[:30]}]: {r.status_code} {r.text[:100]}")
-                if r.status_code == 200:
-                    sent = True
-                    break
-            except Exception as ep_err:
-                logger.warning(f"Telegram endpoint failed: {ep_err}")
-        if not sent:
-            raise Exception("Все эндпоинты Telegram недоступны")
+        r = req_lib.post(
+            'https://hook.eu1.make.com/hqnma995yc6es4pth2okvcbprx741ak7',
+            json={'text': tg_text},
+            timeout=15
+        )
+        logger.info(f"Make webhook: {r.status_code} {r.text[:100]}")
     except Exception as e:
         tg_error = str(e)
         logger.error(f"Telegram ошибка: {e}")
