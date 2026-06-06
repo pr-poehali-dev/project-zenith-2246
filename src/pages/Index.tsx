@@ -350,6 +350,40 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Reviews */}
+      <section id="reviews" className="py-32 px-6 bg-accent/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-xs font-medium tracking-widest text-accent/60 uppercase">Отзывы</span>
+            <h2 className="text-5xl lg:text-6xl font-display font-black tracking-tighter mt-4">
+              <span className="bg-gradient-to-r from-white via-white to-accent/40 bg-clip-text text-transparent">
+                Что говорят клиенты
+              </span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { id: 1, placeholder: true },
+              { id: 2, placeholder: true },
+              { id: 3, placeholder: true },
+            ].map((review) => (
+              <div
+                key={review.id}
+                className="bg-black/40 border border-accent/15 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
+              >
+                <div className="w-full aspect-[4/3] bg-accent/5 flex items-center justify-center">
+                  <div className="text-center text-muted-foreground">
+                    <Icon name="Image" size={40} className="mx-auto mb-2 opacity-30" />
+                    <p className="text-sm opacity-50">Фото отзыва {review.id}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section id="cta" className="py-32 px-6">
         <div
