@@ -42,7 +42,7 @@ def handler(event: dict, context) -> dict:
     # Сохраняем в БД всегда
     try:
         schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
-        conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+        conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='disable')
         cur = conn.cursor()
         cur.execute(f"SET search_path TO {schema}")
         cur.execute(
