@@ -1,8 +1,7 @@
 import os
 import json
 import smtplib
-import urllib.request
-import urllib.parse
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -43,23 +42,32 @@ def handler(event: dict, context) -> dict:
 
     text = '\n'.join(message_lines)
 
-    send_telegram(text)
-    send_email(name, contact, email)
+    tg_error = None
+    mail_error = None
+
+    try:
+        send_telegram(text)
+    except Exception as e:
+        tg_error = str(e)
+
+    try:
+        send_email(name, contact, email)
+    except Exception as e:
+        mail_error = str(e)
 
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
-        'body': json.dumps({'ok': True})
+        'body': json.dumps({'ok': True, 'tg_error': tg_error, 'mail_error': mail_error})
     }
 
 
 def send_telegram(text: str):
     token = os.environ['TELEGRAM_BOT_TOKEN']
-    chat_id = '@alexparfopt'
+    chat_id = '7185027849'
     url = f'https://api.telegram.org/bot{token}/sendMessage'
-    data = urllib.parse.urlencode({'chat_id': chat_id, 'text': text}).encode()
-    req = urllib.request.Request(url, data=data, method='POST')
-    urllib.request.urlopen(req, timeout=10)
+    resp = requests.post(url, json={'chat_id': chat_id, 'text': text}, timeout=10)
+    resp.raise_for_status()
 
 
 def send_email(name: str, contact: str, email: str):
