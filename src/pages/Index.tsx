@@ -319,37 +319,33 @@ const Index = () => {
               style={{ transitionDelay: "200ms" }}
             >
               <div className="p-10 border border-accent/10 bg-card/50 rounded-2xl backdrop-blur-sm h-full">
-                <h3 className="font-display font-bold text-2xl mb-6">Контакты</h3>
+                <h3 className="font-display font-bold text-2xl mb-6">Наши ценности</h3>
                 <div className="space-y-5">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <Icon name="Mail" size={18} className="text-accent" />
+                      <Icon name="ShieldCheck" size={18} className="text-accent" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Email</p>
-                      <a href="mailto:parfopt-1@yandex.ru" className="text-white hover:text-accent transition-colors">
-                        parfopt-1@yandex.ru
-                      </a>
+                      <p className="text-sm text-muted-foreground mb-1">Только оригинал</p>
+                      <p className="text-white">Работаем исключительно с проверенными поставщиками</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <Icon name="Send" size={18} className="text-accent" />
+                      <Icon name="Handshake" size={18} className="text-accent" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Telegram</p>
-                      <a href="https://t.me/alexparfopt" className="text-white hover:text-accent transition-colors">
-                        +7 993 277 0600
-                      </a>
+                      <p className="text-sm text-muted-foreground mb-1">Честные условия</p>
+                      <p className="text-white">Без скрытых комиссий, без минимальной суммы заказа</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <Icon name="MapPin" size={18} className="text-accent" />
+                      <Icon name="Zap" size={18} className="text-accent" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Город и время работы</p>
-                      <p className="text-white">Москва, с 10:00 до 23:00 без выходных</p>
+                      <p className="text-sm text-muted-foreground mb-1">Быстро и надёжно</p>
+                      <p className="text-white">Отправка в день заказа, ответ за считанные минуты</p>
                     </div>
                   </div>
                 </div>
@@ -472,19 +468,56 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-accent/10 py-12 px-6 bg-background/50">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-muted-foreground">
-          <p>© 2025 FirstOpt — Оригинальная парфюмерия оптом</p>
-          <div className="flex gap-8">
-            <a href="mailto:parfopt-1@yandex.ru" className="hover:text-white transition-colors">
-              parfopt-1@yandex.ru
-            </a>
-            <a href="https://t.me/alexparfopt" className="hover:text-white transition-colors">
-              Telegram
-            </a>
-            <a href="#features" className="hover:text-white transition-colors">
-              Преимущества
-            </a>
+      <footer className="border-t border-accent/20 bg-background pt-16 pb-8 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Контакты */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
+            <div>
+              <div className="font-display font-bold text-2xl tracking-tighter bg-gradient-to-r from-white via-accent to-accent/80 bg-clip-text text-transparent mb-4">
+                FirstOpt
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Оригинальная парфюмерия оптом. Более 92 000 позиций с доставкой по РФ и СНГ.
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold tracking-widest text-accent/60 uppercase mb-5">Навигация</p>
+              <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+                <a href="#features" className="hover:text-white transition-colors">Преимущества</a>
+                <a href="#how" className="hover:text-white transition-colors">Как это работает</a>
+                <a href="#pricing" className="hover:text-white transition-colors">О нас</a>
+                <a href="#reviews" className="hover:text-white transition-colors">Отзывы</a>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold tracking-widest text-accent/60 uppercase mb-5">Контакты</p>
+              <div className="flex flex-col gap-4">
+                <a href="mailto:parfopt-1@yandex.ru" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-white transition-colors group">
+                  <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors flex-shrink-0">
+                    <Icon name="Mail" size={16} className="text-accent" />
+                  </div>
+                  parfopt-1@yandex.ru
+                </a>
+                <a href="https://t.me/alexparfopt" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-white transition-colors group">
+                  <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors flex-shrink-0">
+                    <Icon name="Send" size={16} className="text-accent" />
+                  </div>
+                  +7 993 277 0600
+                </a>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <Icon name="MapPin" size={16} className="text-accent" />
+                  </div>
+                  Москва, с 10:00 до 23:00 без выходных
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Разделитель и копирайт */}
+          <div className="border-t border-accent/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+            <p>© 2025 FirstOpt — Оригинальная парфюмерия оптом</p>
+            <p>Москва, Россия</p>
           </div>
         </div>
       </footer>
