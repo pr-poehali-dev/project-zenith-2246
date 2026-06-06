@@ -335,8 +335,8 @@ const Index = () => {
                       <Icon name="Handshake" size={18} className="text-accent" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Честные условия</p>
-                      <p className="text-white">Без скрытых комиссий, без минимальной суммы заказа</p>
+                      <p className="text-sm text-muted-foreground mb-1">Лояльные условия</p>
+                      <p className="text-white">Без минимальной суммы заказа и количества флаконов</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -345,7 +345,7 @@ const Index = () => {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Быстро и надёжно</p>
-                      <p className="text-white">Отправка в день заказа, ответ за считанные минуты</p>
+                      <p className="text-white">Отправка 95% заказов день в день, сборка без предоплаты</p>
                     </div>
                   </div>
                 </div>
