@@ -44,9 +44,8 @@ def handler(event: dict, context) -> dict:
         schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
         conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='disable')
         cur = conn.cursor()
-        cur.execute(f"SET search_path TO {schema}")
         cur.execute(
-            "INSERT INTO leads (name, contact, email) VALUES (%s, %s, %s)",
+            f"INSERT INTO {schema}.leads (name, contact, email) VALUES (%s, %s, %s)",
             (name or None, contact, email or None)
         )
         conn.commit()
